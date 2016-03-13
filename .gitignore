@@ -7,6 +7,7 @@
 /.idea/misc.xml
 /.idea/vcs.xml
 /.idea/dictionaries
+/gradle.properties
 .DS_Store
 /build
 /captures
