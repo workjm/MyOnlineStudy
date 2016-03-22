@@ -3,6 +3,8 @@ package com.workjm.myonlinestudy;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.workjm.myonlinestudy.fragment.TabsFragment;
 import com.workjm.myonlinestudy.utils.ImageLoader;
 
 public class MainActivity extends AppCompatActivity
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private NavigationView navigationView;
+    private String currentType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +38,15 @@ public class MainActivity extends AppCompatActivity
         setupDrawer();
         initNavigationView();
         initFloatingAction();
+        replace(TabsFragment.MENU_THEMES);
     }
 
     private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void initFloatingAction() {
@@ -67,6 +75,19 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    private void replace(String type) {
+        if (!type.equals(currentType)) {
+            currentType = type;
+            replaceFragment(TabsFragment.newInstance(type), type);
+        }
+    }
+
+    public void replaceFragment(Fragment fragment, String tag) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_main, fragment, tag);
+        transaction.commit();
     }
 
     @Override
