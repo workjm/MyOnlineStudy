@@ -7,6 +7,8 @@ import android.net.NetworkInfo;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
+import java.util.Map;
+
 /**
  * Created by workjm on 2016/3/13.
  * Net request encapsulation
@@ -23,6 +25,10 @@ public class Net {
     public static void get(String url, Callback callback, Object tag) {
         OkHttpUtils.get().url(url).tag(tag)
                 .build().execute(callback);
+    }
+
+    public static void post(String url, Callback callback, Map<String, String>params, Object tag) {
+        OkHttpUtils.post().url(url).params(params).tag(tag).build().execute(callback);
     }
 
     public static void cancelTag(Object tag) {
