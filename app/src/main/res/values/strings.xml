@@ -9,4 +9,6 @@
     <string name="nav_setting">设置</string>
     <string name="nav_online">主题</string>
     <string name="nav_other">其他</string>
+
+    <string name="theme_server_url">web/ThemeAction!%s</string>
 </resources>
