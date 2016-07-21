@@ -77,7 +77,7 @@ public class TabsFragment extends BaseFragment{
         List<String> titles = new ArrayList<>();
         titles.add("onLine Themes");
         titles.add("local Themes");
-        fragments.add(new ListFragment());
+        fragments.add(new ThemeFragment());
         fragments.add(new ListFragment());
 
         tabPagerAdapter = new TabPagerAdapter(getChildFragmentManager());

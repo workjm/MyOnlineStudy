@@ -52,6 +52,7 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
 
     @Override
     protected void initViews() {
+        swipeRefresh = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_refresh);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         swipeRefresh.setColorSchemeColors(R.color.colorPrimary,

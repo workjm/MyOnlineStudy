@@ -27,8 +27,8 @@ public class Net {
                 .build().execute(callback);
     }
 
-    public static void post(String url, Callback callback, Map<String, String>params, Object tag, long time) {
-        OkHttpUtils.post().url(url).params(params).tag(tag).build().connTimeOut(time).execute(callback);
+    public static void get(String url, Callback callback, Map<String, String> params, Object tag, long time) {
+        OkHttpUtils.get().url(url).params(params).tag(tag).build().connTimeOut(time).execute(callback);
     }
 
     public static void cancelTag(Object tag) {

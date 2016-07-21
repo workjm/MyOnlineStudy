@@ -1,14 +1,22 @@
 package com.workjm.myonlinestudy.mvp.model;
 
-import android.os.Build;
+import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.workjm.myonlinestudy.MyStudyApplication;
 import com.workjm.myonlinestudy.common.AndroidUtil;
 import com.workjm.myonlinestudy.common.TDeviceInfo;
+import com.workjm.myonlinestudy.mvp.bean.ThemeInfo;
 import com.workjm.myonlinestudy.net.Net;
 import com.workjm.myonlinestudy.utils.ServerHelper;
 import com.zhy.http.okhttp.callback.Callback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +27,17 @@ import okhttp3.Response;
  * Created by junming.liang on 2016/3/30.
  */
 public class ThemeModel implements DataModel {
+    private static final String TAG = "ThemeModel";
     private long lastGetTime;
     public static final int GET_DURATION = 2000;
 
+    private ArrayList<ThemeInfo> themeInfos = new ArrayList<>();
+
     @Override
     public void getData(final OnLoadDataListener listener) {
+        if (themeInfos != null) {
+            themeInfos.clear();
+        }
         lastGetTime = System.currentTimeMillis();
         final Callback<String> callback = new Callback<String>() {
             @Override
@@ -32,6 +46,7 @@ public class ThemeModel implements DataModel {
             }
             @Override
             public void onError(Call call, Exception e) {
+                Log.d(TAG, "onError  e = "+e);
                 if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
                     return;
                 }
@@ -39,6 +54,20 @@ public class ThemeModel implements DataModel {
             }
             @Override
             public void onResponse(String response) {
+                try {
+                    JSONObject jsonObj = new JSONObject(response);
+                    JSONArray data = jsonObj.getJSONArray("themeData");
+                    ThemeInfo themeInfo = null;
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject item = (JSONObject) data.get(i);
+                        Gson gson = new GsonBuilder().create();
+                        themeInfo = gson.fromJson(item.toString(), ThemeInfo.class);
+                        themeInfos.add(themeInfo);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 listener.onSuccess();
             }
 
@@ -75,6 +104,12 @@ public class ThemeModel implements DataModel {
         }
 
         String url = ServerHelper.ThemeUrl + "web/ThemeAction!"+ServerHelper.THEME_ATION;
-        Net.post(url, callback, params, null, 15000);
+        Net.get(url, callback, params, null, 15000);
     }
+
+
+    public ArrayList<ThemeInfo> getThemeInfos() {
+        return themeInfos;
+    }
+
 }

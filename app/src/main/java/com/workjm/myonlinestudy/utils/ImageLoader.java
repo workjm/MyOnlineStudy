@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.workjm.myonlinestudy.R;
 
 /**
  * Created by workjm on 2016/3/13.
@@ -20,6 +21,7 @@ public class ImageLoader {
     public static void load(Context context, String url, ImageView view, int animationTime) {
         Glide.with(context)
                 .load(url)
+                .placeholder(R.drawable.image_bg)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade(animationTime)
                 .into(view);
